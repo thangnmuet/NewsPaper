@@ -36,10 +36,10 @@ public abstract class ParserHtmlBase <E> extends AsyncTask<String,Object,E>{
             return null;
         }
         preResult();
-        return parserHtml(parent.body());
+        return parserHtml();
     }
 
     protected abstract void preResult();
 
-    protected abstract E parserHtml(Element body);
+    protected abstract E parserHtml();
 }
