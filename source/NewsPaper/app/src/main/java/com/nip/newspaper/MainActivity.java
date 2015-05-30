@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import com.nip.newspaper.core.base.CategoryBase;
 import com.nip.newspaper.core.paser.IParserSuccess;
 import com.nip.newspaper.zingnews.composite.HotCategoryComposite;
+import com.nip.newspaper.zingnews.pages.ZingCategory;
 import com.nip.newspaper.zingnews.pages.ZingPage;
 import com.nip.newspaper.zingnews.parserHtml.HomeParser;
 
@@ -55,21 +56,21 @@ public class MainActivity extends Activity {
     private IParserSuccess<ZingPage> homePage = new IParserSuccess<ZingPage>() {
         @Override
         public void succes(ZingPage value) {
-            remove();
+            remove(value.getListCategory().get(0));
             for (CategoryBase cat : value.getListCategory()) {
                 Log.d("Main", cat.getTitle());
             }
         }
     };
 
-    void remove(){
+    void remove(CategoryBase cat){
         View myView = findViewById(R.id.tvHello);
         ViewGroup parent = (ViewGroup) myView.getParent();
         parent.removeView(myView);
 
         HotCategoryComposite hot = new HotCategoryComposite(this);
 
-        hot.load();
+        hot.load((ZingCategory)cat);
         hot.setLayoutParams(new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT));

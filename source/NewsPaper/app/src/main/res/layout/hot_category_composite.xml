@@ -8,24 +8,43 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
       >
-
         <LinearLayout
-            android:id="@+id/cat_hot_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <View
+                android:layout_width="10dip"
+                android:layout_height="2dip"
+                android:background="@android:color/black"
+                android:layout_gravity="center"
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="abc"/>
-
-            <TextView
-                android:layout_width="wrap_content"
+                android:text="Tin Moi"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dip"
+                android:background="@android:color/black"
+                android:layout_gravity="center"
+                />
+        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/cat_hot_main"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="abc"/>
+                android:orientation="vertical">
+
 
             </LinearLayout>
+
+        </LinearLayout>
+
+
 
         <!--<GridLayout-->
             <!--android:id="@+id/cat_hot_main"-->

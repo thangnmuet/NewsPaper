@@ -1,5 +1,13 @@
 package com.nip.newspaper.core.base;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.ImageView;
+
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Date;
 
 /**
@@ -12,6 +20,7 @@ public abstract class ArticleBase {
     private String sortDesciption = "";
     private Date pubDate = null;
     private String link = "";
+    private Bitmap bitmap;
 
     public ArticleBase() {
     }
@@ -62,6 +71,56 @@ public abstract class ArticleBase {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public void getBitImage(ImageView img)
+    {
+        if(bitmap != null)
+        {
+            img.setImageBitmap(bitmap);
+            return;
+
+        }
+
+        new BitmapLoad().execute(img);
+
+
+    }
+
+    // class load bitmap image
+    private class BitmapLoad extends AsyncTask<ImageView,Void,Bitmap>{
+
+        private ImageView img;
+        @Override
+        protected Bitmap doInBackground(ImageView... imageViews) {
+
+            Bitmap bm = null;
+            img = imageViews[0];
+            try
+            {
+
+                bm = BitmapFactory.decodeStream((InputStream)new URL(image_link).getContent());
+
+            }catch(Exception e)
+            {
+                Log.w("Article",e.toString());
+            }
+
+            return bm;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bm) {
+            super.onPostExecute(bm);
+            if(bm == null)
+            {
+                return;
+            }
+
+            bitmap = bm;
+
+            img.setImageBitmap(bm);
+        }
     }
 
 
