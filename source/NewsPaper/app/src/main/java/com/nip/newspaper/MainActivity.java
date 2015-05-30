@@ -1,20 +1,18 @@
 package com.nip.newspaper;
 
 import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
+
 
 import com.nip.newspaper.core.base.CategoryBase;
 import com.nip.newspaper.core.paser.IParserSuccess;
-import com.nip.newspaper.zingnews.pages.ZingCategory;
+import com.nip.newspaper.zingnews.composite.HotCategoryComposite;
 import com.nip.newspaper.zingnews.pages.ZingPage;
 import com.nip.newspaper.zingnews.parserHtml.HomeParser;
 
@@ -68,12 +66,14 @@ public class MainActivity extends Activity {
         View myView = findViewById(R.id.tvHello);
         ViewGroup parent = (ViewGroup) myView.getParent();
         parent.removeView(myView);
-        TextView valueTV = new TextView(this);
-        valueTV.setText("Done");
-        valueTV.setLayoutParams(new RelativeLayout.LayoutParams(
+
+        HotCategoryComposite hot = new HotCategoryComposite(this);
+
+        hot.load();
+        hot.setLayoutParams(new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT));
-        parent.addView(valueTV);
+        parent.addView(hot);
 
     }
 }

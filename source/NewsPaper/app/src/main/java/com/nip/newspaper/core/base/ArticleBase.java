@@ -63,4 +63,6 @@ public abstract class ArticleBase {
     public void setLink(String link) {
         this.link = link;
     }
+
+
 }
