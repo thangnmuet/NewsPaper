@@ -1,17 +1,33 @@
 package com.nip.newspaper;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.nip.newspaper.core.base.CategoryBase;
+import com.nip.newspaper.core.paser.IParserSuccess;
+import com.nip.newspaper.zingnews.pages.ZingCategory;
+import com.nip.newspaper.zingnews.pages.ZingPage;
+import com.nip.newspaper.zingnews.parserHtml.HomeParser;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        HomeParser home = new HomeParser();
+        home.setSuccess(homePage);
+        home.execute("http://news.zing.vn/");
     }
 
 
@@ -36,5 +52,28 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private IParserSuccess<ZingPage> homePage = new IParserSuccess<ZingPage>() {
+        @Override
+        public void succes(ZingPage value) {
+            remove();
+            for (CategoryBase cat : value.getListCategory()) {
+                Log.d("Main", cat.getTitle());
+            }
+        }
+    };
+
+    void remove(){
+        View myView = findViewById(R.id.tvHello);
+        ViewGroup parent = (ViewGroup) myView.getParent();
+        parent.removeView(myView);
+        TextView valueTV = new TextView(this);
+        valueTV.setText("Done");
+        valueTV.setLayoutParams(new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT));
+        parent.addView(valueTV);
+
     }
 }

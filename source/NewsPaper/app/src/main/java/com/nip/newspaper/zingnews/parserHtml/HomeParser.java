@@ -26,8 +26,87 @@ public class HomeParser extends ParserHtmlBase<ZingPage> {
     protected ZingPage parserHtml() {
         ZingCategory hotNews = paserHotNews(parent.select("body > div.wrapper > section#homepage > div.content-wrap > section.featured").first());
         result.addCategory(hotNews);
-        ZingCategory videoAndPic = paserVideoAndImage(parent.select("body > div.wrapper > section#homepage > section.multimedia").first());
-        return null;
+        ZingCategory videoAndPic = paserVideoAndImage(parent.select("body > div.wrapper > section#homepage > section#multimedia").first());
+        result.addCategory(videoAndPic);
+        getNormalCategory(parent.select("body > div.wrapper > section#homepage > div.content-wrap > div.content-wrap").first());
+        return result;
+    }
+
+    /* lay thong tin
+    category normal
+     */
+    private void getNormalCategory(Element normal) {
+
+        if(normal == null)
+        {
+            return;
+        }
+
+        Elements categorys = normal.select(">section");
+        Element[] categoryArr = new Element[categorys.size()];
+        categorys.toArray(categoryArr);
+
+        for(Element cat : categoryArr)
+        {
+            ZingCategory zCat = getCategory(cat);
+            if(zCat != null) {
+                result.addCategory(zCat);
+            }
+        }
+
+
+    }
+
+    private ZingCategory getCategory(Element cat) {
+
+        if(cat == null){
+            return null;
+        }
+
+        ZingCategory zCat = new ZingCategory();
+
+        Element catTitle = cat.select("header > hgroup > h1").first();
+
+        if(catTitle == null)
+        {
+            catTitle = cat.select("header > h2").first();
+        }
+
+        if(catTitle == null)
+        {
+            return null;
+        }
+
+        zCat.setTitle(catTitle.text());
+
+        Elements articles = cat.select(">article");
+        if(articles.size() > 0) {
+            ZingArticle acti;
+            for (Element ar : articles) {
+                acti = getHotNewsArticle(ar);
+                if (acti != null) {
+                    zCat.addArticle(acti);
+                }
+            }
+        }else{
+            // truong hop cac bai viet o trong chuyen muc con
+            Elements catlv = cat.select(">section");
+            ZingCategory zCatChild = null;
+            if(catlv.size() > 0){
+                for (Element catlvs : catlv){
+                    zCatChild = getCategory(catlvs);
+                    if(zCatChild != null){
+                        result.addCategory(zCatChild);
+                    }
+                }
+
+            }
+
+            return null;
+        }
+
+        return zCat;
+
     }
 
     /*
@@ -35,18 +114,23 @@ public class HomeParser extends ParserHtmlBase<ZingPage> {
         */
     private ZingCategory paserVideoAndImage(Element videopic) {
 
+        if(videopic == null)
+        {
+            return null;
+        }
+
         ZingCategory category = new ZingCategory();
         category.setTitle(videopic.select("header>h1").first().text());
 
-        Elements articles = videopic.getElementsByTag("article");
-        Element[] arrArtic = new Element[articles.size()];
-        articles.toArray(arrArtic);
+        Elements articles = videopic.select(">article");
 
         ZingArticle article;
-        for(Element ar : arrArtic)
+        for(Element ar : articles)
         {
             article = getHotNewsArticle(ar);
-            category.addArticle(article);
+            if(article != null) {
+                category.addArticle(article);
+            }
         }
 
         return category;
@@ -56,18 +140,24 @@ public class HomeParser extends ParserHtmlBase<ZingPage> {
      Lấy thông tin category hot news
     */
     private ZingCategory paserHotNews(Element hotNews) {
+
+        if(hotNews == null)
+        {
+            return null;
+        }
+
         ZingCategory category = new ZingCategory();
         category.setTitle("Tin Mới");
 
-        Elements articles = hotNews.getElementsByTag("article");
-        Element[] arrArtic = new Element[articles.size()];
-        articles.toArray(arrArtic);
+        Elements articles = hotNews.select(">article");
 
         ZingArticle article;
-        for(Element ar : arrArtic)
+        for(Element ar : articles)
         {
             article = getHotNewsArticle(ar);
-            category.addArticle(article);
+            if (article != null) {
+                category.addArticle(article);
+            }
         }
 
 
@@ -75,6 +165,11 @@ public class HomeParser extends ParserHtmlBase<ZingPage> {
     }
 
     private ZingArticle getHotNewsArticle(Element ar) {
+
+        if(ar == null)
+        {
+            return null;
+        }
 
         ZingArticle article = new ZingArticle();
 
@@ -104,5 +199,4 @@ public class HomeParser extends ParserHtmlBase<ZingPage> {
 
         return article;
     }
-
 }

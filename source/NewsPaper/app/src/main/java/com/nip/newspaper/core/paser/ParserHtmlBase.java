@@ -5,7 +5,6 @@ import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 
@@ -14,12 +13,17 @@ import java.io.IOException;
  */
 public abstract class ParserHtmlBase <E> extends AsyncTask<String,Object,E>{
     protected E result;
-    private IParserListener listener = null;
+    protected IParserListener listener = null;
+    protected IParserSuccess<E> success = null;
     protected Document parent;
     protected String link;
 
     public void setListener(IParserListener listener) {
         this.listener = listener;
+    }
+
+    public void setSuccess(IParserSuccess success) {
+        this.success = success;
     }
 
     public Object getResult() {
@@ -37,6 +41,15 @@ public abstract class ParserHtmlBase <E> extends AsyncTask<String,Object,E>{
         }
         preResult();
         return parserHtml();
+    }
+
+    @Override
+    protected void onPostExecute(E e) {
+        super.onPostExecute(e);
+        if(success != null)
+        {
+            success.succes(e);
+        }
     }
 
     protected abstract void preResult();
