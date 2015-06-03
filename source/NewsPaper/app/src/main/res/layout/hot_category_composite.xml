@@ -3,11 +3,11 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-      >
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+      <!-->-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
 
             <!--</GridLayout>-->
 
-      </ScrollView>
+      <!--</ScrollView>-->
 
 
 </LinearLayout>

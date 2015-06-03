@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.nip.newspaper.core.base.CategoryBase;
 import com.nip.newspaper.core.paser.IParserSuccess;
+import com.nip.newspaper.zingnews.composite.CategotyComposite;
 import com.nip.newspaper.zingnews.composite.HotCategoryComposite;
 import com.nip.newspaper.zingnews.pages.ZingCategory;
 import com.nip.newspaper.zingnews.pages.ZingPage;
@@ -56,25 +57,24 @@ public class MainActivity extends Activity {
     private IParserSuccess<ZingPage> homePage = new IParserSuccess<ZingPage>() {
         @Override
         public void succes(ZingPage value) {
-            remove(value.getListCategory().get(0));
+            remove(value);
             for (CategoryBase cat : value.getListCategory()) {
-                Log.d("Main", cat.getTitle());
+                Log.d("Main", cat.getTitle() + " " + cat.getListArticle().size());
             }
         }
     };
 
-    void remove(CategoryBase cat){
+    void remove(ZingPage cat){
         View myView = findViewById(R.id.tvHello);
         ViewGroup parent = (ViewGroup) myView.getParent();
         parent.removeView(myView);
 
-        HotCategoryComposite hot = new HotCategoryComposite(this);
-
-        hot.load((ZingCategory)cat);
-        hot.setLayoutParams(new RelativeLayout.LayoutParams(
+        CategotyComposite hot = new CategotyComposite(this);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT));
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
         parent.addView(hot);
+        hot.loadPage(cat);
 
     }
 }

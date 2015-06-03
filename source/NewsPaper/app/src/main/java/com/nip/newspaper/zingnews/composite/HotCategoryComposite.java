@@ -4,14 +4,18 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,6 +40,11 @@ public class HotCategoryComposite extends LinearLayout {
     private LinearLayout main;
     private TableLayout articles;
     private IArticleClick articleClick = null;
+    private ZingCategory hotCat;
+    private boolean isdone = true;
+
+    private float with = 0f;
+    private float with_img = 0f;
 
     public void setArticleClick(IArticleClick articleClick) {
         this.articleClick = articleClick;
@@ -45,51 +54,57 @@ public class HotCategoryComposite extends LinearLayout {
         super(context);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (inflater != null){
-            inflater.inflate(R.layout.hot_category_composite,this);
+        if (inflater != null) {
+            inflater.inflate(R.layout.hot_category_composite, this);
         }
         main = (LinearLayout) findViewById(R.id.cat_hot_main);
         articles = (TableLayout)findViewById(R.id.article);
-
+        with = com.nip.newspaper.core.utilities.Display.getSizeDevice(context).x - TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                2*getResources().getInteger(R.integer.main_marign_left_right), getResources().getDisplayMetrics());
+        with_img = with/2 - TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,4, getResources().getDisplayMetrics());
+        Log.i("Heigh ", with + "");
     }
 
-    public void load(ZingCategory hotCat)
-    {
+    public void load(ZingCategory hotCat) {
+        Log.i("Row", "start");
+        this.hotCat = hotCat;
         View articlehigh_light = getLayoutArticleHighLigth(hotCat.getListArticle().get(0));
         main.addView(articlehigh_light);
         TableRow row;
-        for (int i = 1 ; i < hotCat.getListArticle().size() ; i+=2)
-        {
+        for (int i = 1; i < hotCat.getListArticle().size(); i += 2) {
 
             row = new TableRow(getContext());
             row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
-            row.addView(getLayoutArticle(hotCat.getListArticle().get(i),i));
+            row.addView(getLayoutArticle(hotCat.getListArticle().get(i), i));
 
-            if(i+1 < hotCat.getListArticle().size()){
-                row.addView(getLayoutArticle(hotCat.getListArticle().get(i+1),i+1));
+            if (i + 1 < hotCat.getListArticle().size()) {
+                row.addView(getLayoutArticle(hotCat.getListArticle().get(i + 1), i + 1));
             }
 
             articles.addView(row);
 
         }
         Log.i("Row", "row done");
-
-
 //        main.addView(tableLayout);
     }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        Log.i("onSizeChanged W", this.getMeasuredWidth() + "");
+        Log.i("onSizeChanged H", this.getMeasuredHeight() + "");
+    }
 
-    private View getLayoutArticle(ArticleBase ar1,int col) {
+    private View getLayoutArticle(ArticleBase ar1, int col) {
         // dung lay out frame
 
         FrameLayout frameLayout = new FrameLayout(getContext());
         TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
 
-        if(col%2 != 0)
-        {
-            params.setMargins(0,4,4,0);
-        }else{
-            params.setMargins(0,4,0,0);
+        if (col % 2 != 0) {
+            params.setMargins(0, 4, 2, 0);
+        } else {
+            params.setMargins(2, 4, 0, 0);
         }
 
         frameLayout.setLayoutParams(params);
@@ -98,22 +113,22 @@ public class HotCategoryComposite extends LinearLayout {
 
         ImageView img = new ImageView(getContext());
         img.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        ar1.getBitImage(img);
+        ar1.getBitImage(img,with_img);
         img.setImageDrawable(getResources().getDrawable(R.drawable.cat_img_default));
         img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         frameLayout.addView(img);
 
-        Log.i("HotCategory","image size " + img.getMeasuredWidth());
+        Log.i("HotCategory", "image size " + img.getMeasuredWidth());
 
         // Title
         TextView txtTitle = new TextView(getContext());
         FrameLayout.LayoutParams paramTitle = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         paramTitle.gravity = Gravity.BOTTOM;
-        paramTitle.setMargins(5, 0, 5, 0);
+//        paramTitle.setMargins(5, 0, 5, 0);
         txtTitle.setLayoutParams(paramTitle);
         txtTitle.setTextColor(Color.WHITE);
         txtTitle.setText(ar1.getTitle());
-        txtTitle.setBackgroundColor(Color.argb(70, 0, 0, 0));
+        txtTitle.setBackgroundColor(Color.argb(80, 0, 0, 0));
         txtTitle.setMaxEms(10);
         txtTitle.setSingleLine(false);
         txtTitle.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
@@ -124,7 +139,7 @@ public class HotCategoryComposite extends LinearLayout {
         return frameLayout;
     }
 
-// Tin noi bat
+    // Tin noi bat
     private View getLayoutArticleHighLigth(ArticleBase articleBase) {
 
 
@@ -137,7 +152,7 @@ public class HotCategoryComposite extends LinearLayout {
 
         ImageView img = new ImageView(getContext());
         img.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        articleBase.getBitImage(img);
+        articleBase.getBitImage(img,with);
         img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         frameLayout.addView(img);
 
@@ -166,7 +181,6 @@ public class HotCategoryComposite extends LinearLayout {
 
         TextView txtDes = new TextView(getContext());
         LayoutParams paramsDes = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-        paramsDes.setMargins(5, 0, 5, 2);
         txtDes.setLayoutParams(paramsDes);
         txtDes.setTextColor(Color.WHITE);
         txtDes.setText(articleBase.getSortDesciption());
@@ -184,9 +198,9 @@ public class HotCategoryComposite extends LinearLayout {
     private OnClickListener onClickListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            Toast.makeText(getContext(),(String)view.getTag(),Toast.LENGTH_SHORT).show();
-            if(articleClick != null){
-                articleClick.clickArticle((String)view.getTag());
+            Toast.makeText(getContext(), (String) view.getTag(), Toast.LENGTH_SHORT).show();
+            if (articleClick != null) {
+                articleClick.clickArticle((String) view.getTag());
             }
         }
     };

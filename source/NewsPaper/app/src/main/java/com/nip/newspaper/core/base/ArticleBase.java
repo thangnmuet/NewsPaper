@@ -21,6 +21,7 @@ public abstract class ArticleBase {
     private Date pubDate = null;
     private String link = "";
     private Bitmap bitmap;
+    private float with = -1f;
 
     public ArticleBase() {
     }
@@ -77,7 +78,24 @@ public abstract class ArticleBase {
     {
         if(bitmap != null)
         {
-            img.setImageBitmap(bitmap);
+            setImage(img,bitmap);
+            return;
+
+        }
+
+        new BitmapLoad().execute(img);
+
+        Log.i("image with dbahbda",img.getMeasuredWidth()+"");
+
+
+    }
+
+    public void getBitImage(ImageView img, float width)
+    {
+        this.with = width;
+        if(bitmap != null)
+        {
+            setImage(img,bitmap);
             return;
 
         }
@@ -85,6 +103,19 @@ public abstract class ArticleBase {
         new BitmapLoad().execute(img);
 
 
+    }
+
+    public void setImage(ImageView img,Bitmap bitmap)
+    {
+
+        if(with > 0)
+        {
+            int heigh = (int) (bitmap.getHeight() * (with/bitmap.getWidth()));
+            img.getLayoutParams().height = heigh;
+            img.getLayoutParams().width = (int)with;
+        }
+
+        img.setImageBitmap(bitmap);
     }
 
     // class load bitmap image
@@ -119,7 +150,7 @@ public abstract class ArticleBase {
 
             bitmap = bm;
 
-            img.setImageBitmap(bm);
+            setImage(img,bm);
         }
     }
 
