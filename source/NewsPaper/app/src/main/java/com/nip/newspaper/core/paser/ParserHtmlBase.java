@@ -17,6 +17,7 @@ public abstract class ParserHtmlBase <E> extends AsyncTask<String,Object,E>{
     protected IParserSuccess<E> success = null;
     protected Document parent;
     protected String link;
+    protected String main_link;
 
     public void setListener(IParserListener listener) {
         this.listener = listener;
@@ -55,4 +56,8 @@ public abstract class ParserHtmlBase <E> extends AsyncTask<String,Object,E>{
     protected abstract void preResult();
 
     protected abstract E parserHtml();
+
+    public void setMain_link(String main_link) {
+        this.main_link = main_link;
+    }
 }

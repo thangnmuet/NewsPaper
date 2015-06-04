@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 
+import com.nip.newspaper.core.base.ArticleBase;
 import com.nip.newspaper.core.base.CategoryBase;
 import com.nip.newspaper.core.paser.IParserSuccess;
 import com.nip.newspaper.zingnews.composite.CategotyComposite;
@@ -17,6 +18,7 @@ import com.nip.newspaper.zingnews.composite.HotCategoryComposite;
 import com.nip.newspaper.zingnews.pages.ZingCategory;
 import com.nip.newspaper.zingnews.pages.ZingPage;
 import com.nip.newspaper.zingnews.parserHtml.HomeParser;
+import com.nip.newspaper.zingnews.parserHtml.NormalPageParser;
 
 
 public class MainActivity extends Activity {
@@ -27,7 +29,11 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         HomeParser home = new HomeParser();
         home.setSuccess(homePage);
-        home.execute("http://news.zing.vn/");
+//        home.execute("http://news.zing.vn/");
+        NormalPageParser pageParser = new NormalPageParser();
+        pageParser.setMain_link("http://news.zing.vn/");
+        pageParser.setSuccess(homePage);
+        pageParser.execute("http://news.zing.vn/xa-hoi.html");
     }
 
 
@@ -58,8 +64,8 @@ public class MainActivity extends Activity {
         @Override
         public void succes(ZingPage value) {
             remove(value);
-            for (CategoryBase cat : value.getListCategory()) {
-                Log.d("Main", cat.getTitle() + " " + cat.getListArticle().size());
+            for (ArticleBase cat : value.getListCategory().get(0).getListArticle()) {
+                Log.d("Main", cat.getTitle() + " " + cat.getSortDesciption());
             }
         }
     };
