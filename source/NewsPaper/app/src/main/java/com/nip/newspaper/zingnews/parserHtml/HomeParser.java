@@ -1,5 +1,6 @@
 package com.nip.newspaper.zingnews.parserHtml;
 
+import com.nip.newspaper.core.paser.PagePaserHtml;
 import com.nip.newspaper.core.paser.ParserHtmlBase;
 import com.nip.newspaper.zingnews.pages.ZingArticle;
 import com.nip.newspaper.zingnews.pages.ZingCategory;
@@ -11,7 +12,7 @@ import org.jsoup.select.Elements;
 /**
  * Created by Esoft on 5/29/2015.
  */
-public class HomeParser extends ParserHtmlBase<ZingPage> {
+public class HomeParser extends PagePaserHtml<ZingPage> {
 
     final String TAG_DIV ="div";
     final String CLASS_WRAPER = "wrapper";

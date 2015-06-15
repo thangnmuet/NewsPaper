@@ -1,10 +1,13 @@
 package com.nip.newspaper.core.base;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
+
+import com.nip.newspaper.R;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -81,6 +84,9 @@ public abstract class ArticleBase {
             setImage(img,bitmap);
             return;
 
+        }else
+        {
+            setImage(img,BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.image_defaul));
         }
 
         new BitmapLoad().execute(img);

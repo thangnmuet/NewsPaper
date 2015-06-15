@@ -3,6 +3,9 @@ package com.nip.newspaper.core.paser;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.nip.newspaper.core.base.ArticleBase;
+import com.nip.newspaper.core.base.PageBase;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -47,6 +50,7 @@ public abstract class ParserHtmlBase <E> extends AsyncTask<String,Object,E>{
     @Override
     protected void onPostExecute(E e) {
         super.onPostExecute(e);
+
         if(success != null)
         {
             success.succes(e);

@@ -7,6 +7,7 @@ public abstract class ContentBase {
 
     public static final int TYPE_ONLY_TEXT = 0;
     public static final int TYPE_WITH_IMAGE = 1;
+    public static final int TYPE_VIDEO = 2;
 
     private String text;
     private String imagelink;

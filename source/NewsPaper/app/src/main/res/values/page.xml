@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="zingPage">
+        <item>http://news.zing.vn/</item>
+        <item>http://news.zing.vn/xa-hoi.html</item>
+        <item>http://news.zing.vn/the-gioi.html</item>
+        <item>http://news.zing.vn/thi-truong.html</item>
+        <item>http://news.zing.vn/the-thao.html</item>
+        <item>http://news.zing.vn/song-tre.html</item>
+        <item>http://news.zing.vn/phap-luat.html</item>
+        <item>http://news.zing.vn/giai-tri.html</item>
+        <item>http://news.zing.vn/am-nhac.html</item>
+        <item>http://news.zing.vn/phim-anh.html</item>
+        <item>http://news.zing.vn/the-gioi-sach.html</item>
+        <item>http://news.zing.vn/cong-nghe.html</item>
+        <item>http://news.zing.vn/oto-xe-may.html</item>
+        <item>http://news.zing.vn/suc-khoe.html</item>
+        <item>http://news.zing.vn/giao-duc.html</item>
+        <item>http://news.zing.vn/du-lich.html</item>
+    </string-array>
+</resources>

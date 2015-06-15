@@ -7,9 +7,10 @@ import java.util.List;
  * Created by nguyenminhthang on 5/28/15.
  */
 public abstract class PageBase {
+    private final List<CategoryBase> listCategory = new ArrayList<>();
     private String title;
     private String link;
-    private final List<CategoryBase> listCategory = new ArrayList<>();
+    private ArticleBase highlight;
 
     public PageBase() {
     }
@@ -44,7 +45,15 @@ public abstract class PageBase {
         return listCategory;
     }
 
-    public void addCategory(CategoryBase category){
+    public void addCategory(CategoryBase category) {
         this.listCategory.add(category);
+    }
+
+    public ArticleBase getHighlight() {
+        return highlight;
+    }
+
+    public void setHighlight(ArticleBase highlight) {
+        this.highlight = highlight;
     }
 }

@@ -1,5 +1,6 @@
 package com.nip.newspaper.zingnews.parserHtml;
 
+import com.nip.newspaper.core.paser.PagePaserHtml;
 import com.nip.newspaper.core.paser.ParserHtmlBase;
 import com.nip.newspaper.zingnews.pages.ZingArticle;
 import com.nip.newspaper.zingnews.pages.ZingCategory;
@@ -11,7 +12,7 @@ import org.jsoup.select.Elements;
 /**
  * Created by nguyenminhthang on 6/4/15.
  */
-public class NormalPageParser extends ParserHtmlBase<ZingPage> {
+public class NormalPageParser extends PagePaserHtml<ZingPage> {
 
     @Override
     protected void preResult() {
